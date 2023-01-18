@@ -1,0 +1,5 @@
+::1 - - [18/Jan/2023:18:06:34 +0000] "GET / HTTP/1.1" 200 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+::1 - - [18/Jan/2023:18:06:34 +0000] "GET /css/product.css HTTP/1.1" 200 379 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+::1 - - [18/Jan/2023:18:06:34 +0000] "GET /js/main.js HTTP/1.1" 200 519 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+::1 - - [18/Jan/2023:18:06:34 +0000] "GET /css/main.css HTTP/1.1" 200 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+::1 - - [18/Jan/2023:18:06:34 +0000] "GET /images/2023-01-11T16:47:02.500Z-capp.png HTTP/1.1" 200 13741511 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
