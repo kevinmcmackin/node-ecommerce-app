@@ -23,7 +23,6 @@ exports.postAddProduct = (req, res, next) => {
     const price = req.body.price;
     const description = req.body.description;
     if (!image) { // if doesn't pass filter
-        console.log('fuck')
         return res.status(422).render('admin/edit-product', {
             pageTitle: 'Add Product',
             path: '/admin/add-product',
@@ -166,10 +165,7 @@ exports.postEditProduct = (req, res, next) => {
 exports.getProducts = (req,res,next) => {
     // we only want to render products created by logged in user
     Product.find({userId: req.user._id})
-    // .select('title price -_id')
-    // .populate('userId', 'name') // populate field with all detail information and not just the ID
     .then((products) => {
-        console.log(products)
         res.render('admin/products', {
             prods: products,
             pageTitle: 'Admin Products',
@@ -184,19 +180,23 @@ exports.getProducts = (req,res,next) => {
 };
 
 exports.deleteProduct = (req, res, next) => {
-    const prodId = req.params.productId;
+    console.log('delete');
+    const prodId = req.body.productId;
     Product.findById(prodId)
-        .then(product => {
-            if (!product) {
-                return next(new Error('Product not found.'));
-            }
-            fileHelper.deleteFile(product.imageUrl); // delete file from storage
-            return Product.deleteOne({ _id: prodId, userId: req.user._id }) // delete the product if the user who created matches user deleting
-        })
-        .then(() => {
-            console.log('Destroyed product');
-            res.status(200).json({message: 'Success!'});
-        })
-        .catch(err => {
-            res.status(500).json({message: 'Deleting product failed!'});    
-        });};
+      .then(product => {
+        if (!product) {
+          return next(new Error('Product not found.'));
+        }
+        fileHelper.deleteFile(product.imageUrl);
+        return Product.deleteOne({ _id: prodId, userId: req.user._id });
+      })
+      .then(() => {
+        console.log('DESTROYED PRODUCT');
+        res.redirect('/admin/products');
+      })
+      .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+      });
+};

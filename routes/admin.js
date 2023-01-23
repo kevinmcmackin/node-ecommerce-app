@@ -45,7 +45,7 @@ router.post('/edit-product', [
 isAuth, adminController.postEditProduct);
 
 // could use any word here. we just choose delete for clarity
-router.delete('/product/:productId', isAuth, adminController.deleteProduct);
+router.post('/delete-product', isAuth, adminController.deleteProduct);
 
 module.exports = router;
 
