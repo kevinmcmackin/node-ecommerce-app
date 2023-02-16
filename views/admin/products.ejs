@@ -1,0 +1,84 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/product.css">
+    
+</head>
+
+<body>
+    <%- include('../includes/nav.ejs') %>
+    <main>
+        <div class="prod-list-header">
+            <% if (products.length === 9) { %>
+                <p class="showing poppins-500">Showing <%= ((page - 1) * 9) + 1 %> - <%=  (page * 2) %> of <%= totalItems %> products</p>
+            <% } else if (products.length === 0) { %>
+                <p class="showing poppins-500">Showing 0 - <%=  (products.length) %> of <%= totalItems %> products</p>
+            <% } else { %>
+                <p class="showing poppins-500">Showing <%= ((page - 1) * 9) + 1 %> - <%=  (products.length) %> of <%= totalItems %> products</p>
+            <% } %>
+            <select name="admin-drop" id="admin-drop" class="poppins-500">
+                <option value="For Sale" selected>For Sale</option>
+                <option value="Sold">Out of Stock</option>
+            </select>
+        </div>
+        <% if (products.length > 0) { %>
+            <div class="grid">
+                <% for (let product of products) { %>
+                    <div class="product-item">
+                        <div class="product-item-top">
+                            <a href="/<%= product._id %>" class="prod-image-a">
+                                <div class="prod-image-wrap">
+                                    <img 
+                                        src="/<%= product.imageUrl %>"
+                                        alt="<%= product.title %>"
+                                        class="prod-image"
+                                    >
+                                </div>
+                            </a>
+                            <div class="prod-info">
+                                <% if (product.title.length < 40) { %>
+                                    <h1 class="prod-title text poppins-600"><%= product.title %></h1>      
+                                <% } else { %>
+                                    <h1 class="prod-title text poppins-600"><%= product.title.slice(0, 40) %>...</h1>      
+                                <% } %>
+                                <h1 class="prod-author text poppins-600"><%= product.author %></h1>                                          
+                            </div>
+                        </div>
+                        <div class="product-item-bottom">
+                            <div class="card__actions">
+                                <h2 class="prod-price text poppins-500">$<%= product.price %></h2>
+                                <% if (product.quantity > 0) { %>
+                                    <p class="prod-quantity text poppins-500">
+                                        <%= product.quantity %> in stock <i class="fa-solid fa-check"></i>
+                                    </p>
+                                <% } %>
+                                <% if (product.quantity === 0) { %>
+                                    <p class="prod-quantity text sold_out poppins-500">
+                                        Sold!
+                                    </p>
+                                <% } %>
+                                <input type="hidden" value="<%= product._id %>" name="productId">
+                                <div class="edit-delete">
+                                    <a href="/admin/edit-product/<%= product._id %>" class="btn poppins-500">Edit</a>
+                                    <form action="/admin/delete-product" method="POST">
+                                        <input type="hidden" value="<%= product._id %>" name="productId">
+                                        <button type="submit" class="btn poppins-500">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                <% } %>
+        </div>
+        <% } else { %>
+            <div class="admin-no-prods-wrap">
+                <h1 id="admin-no-prods poppins-600">No Products Found!</h1>
+                <a id="list-item" href="add-product" class="poppins-500">List an item</a>
+            </div>
+        <% } %>
+        <% if (!(currentPage === 1 && !hasNextPage)) { %>
+            <%- include('../includes/pagination.ejs', { currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage }) %>
+        <% } %>
+    </main>
+    <script src="/js/admin-prods.js"></script>
+
+<%- include('../includes/end.ejs') %>

@@ -1,0 +1,69 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/orders.css">
+    </head>
+
+    <body>
+        <%- include('../includes/nav.ejs') %>
+        <main>
+            <div class="orders-wrap">
+                <div class="header">
+                    <h2 id="order" class="poppins-600">Your Orders</h2>
+                </div>
+                <hr id="header-hr">
+                <% if (orders.length > 0) { %>
+                    <ul class="orders">
+                        <% orders.forEach(order => { %>
+                            <li class="orders__item">
+                                <div class="order-header">
+                                    <div class="order-header-left">
+                                        <p id="order-placed" class="poppins-500">Order placed:</p>
+                                        <p id="order-date" class="poppins-500"><%= order.date.day %>-<%= order.date.month %>-<%= order.date.year %></p>
+                                    </div>
+                                    <div class="order-header-right">
+                                        <a href="/orders/<%= order._id %>" target="_blank" id="invoice-btn" class="poppins-500">Invoice</a>
+                                        <p id="order-num" class="poppins-500">Order - # <%= order._id %></p>
+                                    </div>
+                                </div>
+                                <hr class="order-hr">
+                                <% order.products.forEach(p => { %>
+                                    <div class="orders__products">
+                                        <div class="order-prod-left">
+                                            <div class="order-prod-img-div">
+                                                <img src="<%= p.product.imageUrl %>" alt="" id="order-pic">
+                                            </div>
+                                            <div class="order-prod-info">
+                                                <p id="prod-info-title" class="poppins-500"><%= p.product.title %></p>
+                                                <p id="prod-info-seller" class="poppins-500">Sold by <a href="/users/<%=p.product.userId._id%>" class="username-click" id="nav-to-user"><%= p.product.userId.username %></a></p>
+                                                <p id="prod-info-quant" class="poppins-500">x<%= p.quantity %></p>
+                                                <input type="hidden" value="<%= p.product.userId._id %>" name="userId">
+                                            </div>
+                                        </div>
+                                        <div class="order-prod-right">
+                                            <p id="each-price-tot" class="poppins-500">$<%= (p.quantity * p.product.price * 1.15).toFixed(2) %></p>
+                                        </div>
+                                    </div>
+                                <% }); %>
+                                <hr class="order-hr">
+                                <div class="order-footer">
+                                    <p id="order-total" class="poppins-500">Total: $<%= order.total.toFixed(2) %></p>
+                                </div>
+                            </li>
+                        <% }); %>
+                    </ul>
+                <% } else { %>
+                    <form action="/" method="GET">
+                        <div class="no-orders-div">
+                            <h1 id="no-prods" class="poppins-600">No orders yet!</h1>
+                            <button class="shop-return bold-text poppins-500" type="submit">Return to shop</button>
+                        </div>
+                    </form>
+                <% } %>
+                <% if (!(currentPage === 1 && !hasNextPage)) { %>
+                    <%- include('../includes/pagination.ejs', { currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage }) %>
+                <% } %>
+            </div>
+        </main>
+        
+        <script src="/js/orders.js"></script>
+
+        <%- include('../includes/end.ejs') %>

@@ -1,0 +1,123 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form {
+    background-color: green;
+}
+
+.signup-title {
+    font-size: 34px;
+    font-weight: 500;
+    margin: 0;
+    color:#00473e;
+}
+
+.login-title {
+    font-size: 34px;
+    font-weight: 500;
+    margin: 0;
+    color: #00473e;
+}
+
+#email::placeholder {
+    color: #475d5b;
+}
+
+#username::placeholder {
+    color: #475d5b;
+}
+
+#password::placeholder {
+    color: #475d5b;
+}
+
+#confirmPassword::placeholder {
+    color: #475d5b;
+}
+
+
+.signup-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 400px;
+    height: 520px;
+    padding: 30px;
+    /* padding-bottom: 0; */
+    background-color: white;
+    border: 5px solid #00332c;
+    border-radius: 16px;
+    margin-top: 80px;
+    position: relative;
+}
+
+.login-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 400px;
+    height: 380px;
+    padding: 30px;
+    background-color: white;
+    border: 5px solid #00332c;
+    border-radius: 16px;
+    margin-top: 80px;
+    position: relative;
+    /* padding-bottom: 40px; */
+}
+
+.inputs-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 350px;
+    width: 100%;
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 16px;
+    width: 100%;
+}
+
+.input {
+    width: 95%;
+    height: 50px;
+    border: 3px solid #00332c;
+    border-radius: 5px;
+    background-color: #f2f7f5;
+    font-size: 18px;
+    padding: 10px;
+    color: #00473e;
+}
+
+.create-acc-btn {
+    width: 95%;
+    height: 55px;
+    background-color: #faae2b;
+    border: none;
+    border-radius: 5px;
+    color: #00473e;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.post-login-btn {
+    width: 95%;
+    height: 80px;
+    background-color: #faae2b;
+    border: none;
+    border-radius: 5px;
+    color: #00473e;
+    font-size: 18px;
+}

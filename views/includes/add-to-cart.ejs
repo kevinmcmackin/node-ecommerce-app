@@ -1,0 +1,19 @@
+<% if (isAuthenticated) { %>
+    <link rel="stylesheet" href="/css/fonts.css">
+    <form action="/cart" method="POST" class="add-form">
+        <input type="hidden" name="productId" value="<%= product._id %>">
+        <% if (product.quantity > 0) { %>
+            <div class="select-div">
+                <select name="quantity" class="poppins-500 qnty-select" id="add-to-cart-select">
+                <% for (let i = 1; i <= product.quantity; i++) { %>
+                    <option value="<%= i %>"><%= i %></option>
+                <% } %>
+            </select>
+            </div>
+        <% } %>
+        <button class="add-to-cart-btn poppins-500 <%= product.quantity === 0 ? 'disabled' : '' %>" 
+            type="submit" <%= product.quantity === 0 ? 'disabled' : '' %>
+            >Add to Cart
+        </button>
+    </form>
+<% } %>

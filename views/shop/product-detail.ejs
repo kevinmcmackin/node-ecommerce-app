@@ -1,0 +1,63 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/product.css">
+    </head>
+
+    <body>
+        <%- include('../includes/nav.ejs') %>
+        <main>
+            <div class="detail-wrap">
+                <div class="detail-left">
+                    <div class="detail-image-div">
+                        <img src="/<%= product.imageUrl %>" alt="<%= product.title %>" class="detail-image">
+                    </div>
+                </div>
+                <div class="detail-center">
+                    <div class="detail-center-top">
+                        <h1 class="detail-title poppins-600"><%= product.title %></h1>
+                        <h1 class="detail-author poppins-500"><%= product.author %></h1>
+                        <hr id="detail-hr">
+                        <h1 class="detail-condition poppins-500">Condition: <%= product.condition %></h1>
+                        <h1 class="detail-desc poppins-500">Product Description</h1>
+                        <textarea name="detail-desc-text" id="detail-desc-text" class="poppins-500" cols="50" rows="8" readonly><%= product.description %></textarea>
+                    </div>
+                    <div class="detail-center-bottom">
+                        <h1 class="detail-seller poppins-500">Sold by <a href="/users/<%=product.userId._id%>" class="username-click" id="nav-to-user"><%= product.userId.username %></a></h1>
+                    </div>
+                </div>
+                <div class="detail-right">
+                    <div class="add-cart-div">
+                        <h2 class="detail-price poppins-600">$<%= product.price %></h2>
+                        <% if (product.quantity > 0) { %>
+                            <h2 class="detail-quantity poppins-500"><%= product.quantity %> left in stock</h2>
+                        <% } %>
+                        <% if (product.quantity === 0) { %>
+                            <h2 class="sold_out detail-quantity poppins-500">Sold out!</h2>
+                        <% } %>
+                        <div class="quant-add">
+                            <% if (isAuthenticated) { %>
+                                <form action="/cart" method="POST" class="add-form-detail">
+                                    <input type="hidden" name="productId" value="<%= product._id %>">
+                                    <% if (product.quantity > 0) { %>
+                                            <select name="quantity" class="qnty-select poppins-500" id="add-to-cart-select">
+                                            <% for (let i = 1; i <= product.quantity; i++) { %>
+                                                <option value="<%= i %>"><%= i %></option>
+                                            <% } %>
+                                        </select>
+                                    <% } %>
+                                </form>
+                            <% } %>
+                            <form action="/cart" method="POST">
+                                <input type="hidden" name="productId" value="<%= product._id %>">
+                                <button class="add-to-cart-btn-detail poppins-500 <%= product.quantity === 0 ? 'disabled' : '' %>" 
+                                    type="submit" <%= product.quantity === 0 ? 'disabled' : '' %>
+                                    >Add to Cart
+                                </button>                        
+                            </form>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <%- include('../includes/end.ejs') %>

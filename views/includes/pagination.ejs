@@ -1,0 +1,45 @@
+<section class="pagination poppins-400">
+
+    <!-- prev button -->
+    <a href="?page=<%= previousPage %>" class="<%= (currentPage === 1) ? 'disable' : '' %>">Prev</a>
+
+    <!-- first box -->
+    <a href="?page=1" class="<%= (currentPage === 1) ? 'active' : '' %>">1</a>
+    <% if (nextPage === 2 || currentPage === 2) { %>
+        <a href="?page=2" class="<%= (currentPage === 2) ? 'active' : '' %>">2</a>
+    <% } %>
+
+    <!-- first dots -->
+    <% if (currentPage > 2) { %>
+        <p>...</p>
+    <% } %>
+
+    <!-- prev box -->
+    <% if (previousPage > 1 && previousPage !== lastPage) { %>
+        <a href="?page=<%= previousPage %>"><%= previousPage %></a>
+    <% } %>
+
+    <!-- current box -->
+    <% if (currentPage !== lastPage && currentPage > 2) { %>
+        <a href="?page=<%= currentPage %>" class="active"><%= currentPage %></a>
+    <% } %>
+
+    <!-- next box -->
+    <% if (nextPage < lastPage && nextPage !== 2) { %>
+        <a href="?page=<%= nextPage %>"><%= nextPage %></a>
+    <% } %>
+
+    <!-- second dots -->
+    <% if (lastPage > currentPage + 2) { %>
+        <p>...</p>
+    <% } %>
+
+    <!-- final box -->
+    <% if (lastPage > 2) { %>
+    <a href="?page=<%= lastPage %>" class="<%= (currentPage === lastPage) ? 'active' : '' %>"><%= lastPage %></a>
+    <% } %>
+
+    <!-- next button -->
+    <a href="?page=<%= nextPage %>" class="<%= (currentPage === lastPage) ? 'disable' : '' %>">Next</a>
+    
+</section>

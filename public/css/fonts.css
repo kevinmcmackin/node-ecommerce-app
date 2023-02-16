@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Babylonica&family=Poppins:wght@200;300;400;500;600&display=swap');
+
+.poppins-200 {
+    font-family: 'Poppins', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 200;
+}
+
+.poppins-300 {
+    font-family: 'Poppins', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 300;
+}
+
+.poppins-400 {
+    font-family: 'Poppins', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 400;
+}
+
+.poppins-500 {
+    font-family: 'Poppins', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 500;
+}
+
+.poppins-600 {
+    font-family: 'Poppins', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 600;
+}
+
+.place {
+    font-family: 'Poppins', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 400;
+    color: #475d5b;
+}
+
+.place::placeholder {
+    font-family: 'Poppins', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 400;
+    color: #475d5b;
+    opacity: 0.7;
+}

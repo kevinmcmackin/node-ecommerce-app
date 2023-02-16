@@ -1,0 +1,141 @@
+<link rel="stylesheet" href="/css/nav.css">
+<link rel="stylesheet" href="/css/fonts.css">
+
+<div class="backdrop"></div>
+<header class="main-header">
+    <button id="side-menu-toggle">Menu</button>
+    <nav class="main-header__nav">
+        <ul class="main-header__item-list">
+            <li class="main-header__item">
+                <a class="<%= path === '/' ? 'active' : '' %>" href="/"><i class="fa-solid fa-book"></i></a>
+            </li>
+            <li class="main-header__item__search">
+                <input type="text" name="search-input" id="search-input" placeholder="search" class="poppins-500">
+                <div class="mag-div">
+                    <a id="search-link" href="/"><i class="fa-solid fa-magnifying-glass"></i></a>
+                </div>
+            </li>
+        </ul>
+        <ul class="main-header__item-list">
+            <% if (!isAuthenticated) { %>
+                <% if (path !== '/login') { %>
+                    <li class="main-header__item">
+                        <div class="login-btn">
+                            <a class="<%= path === '/login' ? 'active' : '' %> poppins-500" href="/login">Login</a>
+                        </div>
+                    </li>
+                <% } %>
+                <li class="main-header__item">
+                    <div class="signup-btn">
+                        <a class="poppins-500" href="/signup">Sign Up</a>
+                    </div>
+                </li>
+            <% } if (isAuthenticated) { %>
+                <div class="dropdown">
+                    <i class="fa-solid fa-user"></i>
+                    <div class="dropdown-content">
+                        <form action="/orders" method="GET">
+                            <button type="submit" class="drop-btn">
+                                <div class="dropbox">
+                                    <i class="fa-solid fa-file-lines dropdown-icons"></i>                            
+                                    <p class="poppins-500">Orders</p>
+                                </div>
+                            </button>
+                        </form>
+                        <hr>
+                        <form action="/admin/products" method="GET">
+                            <button type="submit" class="drop-btn">
+                                <div class="dropbox">
+                                    <i class="fa-solid fa-list"></i>
+                                    <p class="poppins-500">My Listings</p>
+                                </div>
+                            </button>
+                        </form>
+                        <hr>
+                        <form action="/admin/sales" method="GET">
+                            <button type="submit" class="drop-btn">
+                                <div class="dropbox">
+                                    <i class="fa-solid fa-money-check-dollar"></i>
+                                    <p class="poppins-500">Sales</p>
+                                </div>
+                            </button>
+                        </form>
+                        <hr>
+                        <form action="/admin/add-product" method="GET">
+                            <button type="submit" class="drop-btn">
+                                <div class="dropbox">
+                                    <i class="fa-solid fa-plus"></i>                                    
+                                    <p class="poppins-500">Add Product</p>
+                                </div>
+                            </button>
+                        </form>
+                        <hr>
+                        <form action="/logout" method="POST">
+                            <button type="submit" class="drop-btn">
+                                <div class="dropbox">
+                                    <i class="fa-solid fa-arrow-right-from-bracket dropdown-icons"></i>
+                                    <p class="poppins-500">Logout</p>
+                                </div>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <li class="main-header__item">
+                    <form action="/cart" method="GET">
+                        <button type="submit">
+                            <div class="cart-icon-div">
+                                <i class="fa-solid fa-cart-shopping" ></i>
+                                <div id="cart-items-div">
+                                    <p id="cart-items" class="poppins-400"><%= cartTot %></p>
+                                </div>
+                            </div>
+                        </button>
+                    </form>
+                </li>
+            <% } %>
+        </ul>
+    </nav>
+</header>
+
+<nav class="mobile-nav">
+    <ul class="mobile-nav__item-list">
+        <li class="mobile-nav__item">
+            <a class="<%= path === '/' ? 'active' : '' %>" href="/">Shop</a>
+        </li>
+        <li class="mobile-nav__item">
+            <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Products</a>
+        </li>
+        <% if (isAuthenticated) { %>
+            <li class="mobile-nav__item">
+                <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
+            </li>
+            <li class="mobile-nav__item">
+                <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">Orders</a>
+            </li>
+            <li class="mobile-nav__item">
+                <a class="<%= path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add Product
+                </a>
+            </li>
+            <li class="mobile-nav__item">
+                <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">Admin Products
+                </a>
+            </li>
+        <% } %>
+        <% if (!isAuthenticated) { %>
+            <li class="mobile-nav__item">
+                <a class="<%= path === '/login' ? 'active' : '' %>" href="/login">Login</a>
+            </li>
+            <li class="mobile-nav__item">
+                <a class="signup-btn <%= path === '/signup' ? 'active' : '' %>" href="/signup">Sign Up</a>
+            </li>
+        <% } else { %>
+            <li class="mobile-nav__item">
+                <form action="/logout" method="post">
+                    <button type="submit">Logout</button>
+                </form>
+            </li>
+        <% } %>
+    </ul>
+</nav>
+
+<script src="/js/nav.js"></script>

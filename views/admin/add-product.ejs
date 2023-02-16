@@ -1,0 +1,129 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/product.css">
+    
+</head>
+
+<body>
+   <%- include('../includes/nav.ejs') %>
+    <main>
+        <% if (errorMessage) { %>
+            <div class="user-message user-message--error poppins-600"><%= errorMessage %></div>
+        <% } %>
+        <div class="add-prod-wrap">
+            <div class="header">
+                <h2 id="cart" class="poppins-600">Add Product</h2>
+            </div>
+            <hr id="header-hr">
+            <div class="add-prod-info-wrap">
+                <div class="add-prod-left">
+                    <div id="upload-div">
+                        <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                        <p id="add-image" class="poppins-400">Add Image</p>
+                    </div>
+                    <img id="preview">
+                </div>
+                <div class="add-prod-right">
+                    <form class="form-div" action="/admin/add-product" method="POST" enctype="multipart/form-data">
+                        <div class="add-sub-div">
+                            <label for="title" class="add-prod-input-text poppins-400">Title</label>
+                            <input 
+                                class="add-prod-input place <%= validationErrors.find(e => e.param === 'title') ? 'invalid' : '' %>"
+                                type="text" 
+                                name="title" 
+                                id="add-prod-title" 
+                                value="<%= product.title %>"
+                                placeholder="5-60 characters"
+                            >
+                        </div>
+                        <div class="add-sub-div">
+                            <label for="author" class="add-prod-input-text poppins-400">Author</label>
+                            <input 
+                                class="add-prod-input place <%= validationErrors.find(e => e.param === 'author') ? 'invalid' : '' %>"
+                                type="text" 
+                                name="author" 
+                                id="add-prod-author" 
+                                value="<%= product.author %>"
+                                placeholder="Max 30 characters"
+                            >
+                        </div>
+                        <div class="add-sub-div">
+                            <label for="image" class="place add-prod-input-text poppins-400">Image</label>
+                            <input 
+                                class=""
+                                type="file" 
+                                name="image" 
+                                id="add-prod-image" 
+                            >
+                        </div>
+                        <div class="add-sub-div">
+                            <label for="price" class="add-prod-input-text poppins-400">Price</label>
+                            <input 
+                                class="add-prod-input place <%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
+                                type="number"
+                                name="price"
+                                id="add-prod-price"
+                                value="<%= product.price %>"
+                                step="0.01"
+                            >
+                        </div>
+                        <div class="add-sub-div">
+                            <label for="quantity" class="add-prod-input-text poppins-400">Quantity</label>
+                            <input 
+                                class="add-prod-input place <%= validationErrors.find(e => e.param === 'quantity') ? 'invalid' : '' %>"
+                                type="text" 
+                                name="quantity" 
+                                id="add-prod-quantity" 
+                                value="<%= product.quantity %>"
+                                step="1"
+                            >
+                        </div>
+                        <div class="add-sub-div">
+                            <label for="condition" class="add-prod-input-text poppins-400">Condition</label>
+                            <select name="condition" id="condition-drop">
+                                <% if (condition === 'new') { %>
+                                    <option value="new" selected>New</option>
+                                <% } else { %>
+                                    <option value="new">New</option>
+                                <% } %>
+
+                                <% if (condition === 'like-new' || condition === null) { %>
+                                    <option value="like-new" selected>Used - like new</option>
+                                <% } else { %>
+                                    <option value="like-new">Used - like new</option>
+                                <% } %>
+
+                                <% if (condition === 'fair') { %>
+                                    <option value="fair" selected>Used - fair</option>
+                                <% } else { %>
+                                    <option value="fair">Used - fair</option>
+                                <% } %>
+                                <% if (condition === 'poor') { %>
+                                    <option value="poor" selected>Used - poor</option>
+                                <% } else { %>
+                                    <option value="poor">Used - poor</option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="add-sub-div">
+                            <label for="description" class="add-prod-input-text poppins-400">Notes</label>
+                            <textarea 
+                                class="<%= validationErrors.find(e => e.param === 'description') ? 'invalid' : '' %> place"
+                                name="description"
+                                id="add-prod-description" 
+                                rows="8"
+                                cols="50"
+                                placeholder="Max 400 characters"
+                            ><%= product.description %></textarea>
+                        </div>
+                        <button class="add-btn poppins-400" type="submit">Add Product</button>
+                    </form>
+                </div>
+            </div>
+           
+        </div>
+    </main>
+    <script src="/js/add-product.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<%- include('../includes/end.ejs') %>

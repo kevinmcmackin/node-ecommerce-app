@@ -1,0 +1,520 @@
+.test {
+    color: #00473e;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  background-color: #f2f7f5;
+}
+
+main {
+  padding: 1rem;
+  /* margin: auto; */
+}
+
+form {
+  display: inline;
+}
+
+.centered {
+  text-align: center;
+}
+
+.image {
+  height: 20rem;
+}
+
+.image img {
+  height: 100%;
+}
+
+.main-header {
+  width: 100%;
+  height: 3.5rem;
+  background-color: #00473e;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.main-header__nav {
+  height: 100%;
+  width: 100%;
+  display: none; /*this way we hide the mobile version of the nav bar unless the screen size is at mobile size*/
+  align-items: center;
+  justify-content: space-between;
+}
+
+.main-header__item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.main-header__item {
+  margin: 0 0.5rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-header__item__search {
+  margin: 0 0.5rem;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-left: 30px;
+}
+
+.mag-div {
+  background-color: #ffa8ba;
+  padding: 8px;
+  border-radius: 50px;
+  margin-left: 5px;
+  font-size: 10px;
+}
+
+.main-header__item a,
+.main-header__item button {
+  font: inherit;
+  background: transparent;
+  border: none;
+  text-decoration: none;
+  color: #f2f7f5;
+  cursor: pointer;
+}
+
+.main-header__item a:hover,
+.main-header__item a:active,
+.main-header__item a.active,
+.main-header__item button:hover,
+.main-header__item button:active {
+  color: #f2f7f5;
+}
+
+.mobile-nav {
+  width: 30rem;
+  height: 100vh;
+  max-width: 90%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: #f2f7f5;
+  z-index: 10;
+  padding: 2rem 1rem 1rem 2rem;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-out;
+}
+
+/*applies this transform property to elements that have both the 'open' adn mobile nav classes*/
+.mobile-nav.open {
+  transform: translateX(0);
+}
+
+.mobile-nav__item-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+.mobile-nav__item {
+  margin: 1rem;
+  padding: 0;
+}
+
+.mobile-nav__item a,
+.mobile-nav__item button {
+  font: inherit;
+  text-decoration: none;
+  color: black;
+  font-size: 1.5rem;
+  padding: 0.5rem 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.mobile-nav__item a:active,
+.mobile-nav__item a:hover,
+.mobile-nav__item a.active,
+.mobile-nav__item button:hover,
+.mobile-nav__item button:active {
+  background: #00473e;
+  color: #f2f7f5;
+  border-radius: 3px;
+}
+
+#side-menu-toggle {
+  border: 1px solid #f2f7f5;
+  font: inherit;
+  padding: 0.5rem;
+  display: block;
+  background: transparent;
+  color: #f2f7f5;
+  cursor: pointer;
+}
+
+#side-menu-toggle:focus {
+  outline: none;
+}
+
+#side-menu-toggle:active,
+#side-menu-toggle:hover {
+  color: #ffeb3b;
+  border-color: #ffeb3b;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 5;
+  display: none;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 288px);
+  grid-gap: 40px;
+  width: 1000px;
+  justify-content: center;
+  /* margin-top: 80px; */
+}
+
+.shop-grid-no-margin {
+  margin: 0;
+}
+
+.card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+}
+
+.card__header,
+.card__content {
+  padding: 1rem;
+}
+
+.card__header h1,
+.card__content h1,
+.card__content h2,
+.card__content p {
+  margin: 0;
+}
+
+.card__image {
+  width: 100%;
+}
+
+.card__image img {
+  width: 100%;
+}
+
+.card__actions {
+  height: 140px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.card__actions button,
+.card__actions a {
+  margin: 0 0.25rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.25rem 1rem;
+  text-decoration: none;
+  font: inherit;
+  border: 1px solid #00473e;
+  color: #00473e;
+  background: #f2f7f5;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.btn:hover,
+.btn:active {
+  background-color: #00473e;
+  color: #f2f7f5;
+}
+
+.btn.danger {
+  color: red;
+  border-color: red;
+}
+
+.btn.danger:hover,
+.btn.danger:active {
+  background: red;
+  color: #f2f7f5;
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination a {
+  text-decoration: none;
+  color: #00473e;
+  padding: 0.5rem 1rem;
+  border: 1px solid #00473e;
+  margin: 0 5px;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+.pagination p {
+  text-decoration: none;
+  color: #00473e;
+  padding: 0.5rem;
+  margin: 0;
+  border-radius: 5px;
+}
+
+.pagination a:hover, 
+.pagination a:active,
+.pagination a.active {
+  background: #00473e;
+  color: #f2f7f5;
+}
+
+.disable {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.fa-solid {
+  color: #f2f7f5;
+  font-size: 20px;
+  margin-left: 0px;
+}
+
+.fa-magnifying-glass {
+  /* margin-left: 10px; */
+  font-size: 16px;
+}
+
+.dropdown-icons {
+  color: #f2f7f5;
+
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  background-color: #f2f7f5;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  left: -90px;
+  background-color: #00473e;
+  border: 4px solid #00332c;
+  border-radius: 5px;
+  padding: 7px 8px;
+}
+
+.dropdown-content a {
+  display: block;
+  text-align: left;
+  line-height: 20px;
+}
+
+.dropdown-content hr {
+  width: 100%;
+  margin: 6px 0;
+  border: 1px solid #f2f7f5;
+}
+
+.dropbox {
+  display: flex;
+  width: 140px;
+  height: 25px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 3px;
+  margin: 0;
+}
+
+.dropbox p {
+  margin: 0;
+  color: #f9f9f9;
+  font-size: 16px;
+}
+
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.drop-btn {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.signup-btn {
+  background-color: #faae2b;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  margin: 0;
+}
+
+.signup-btn a {
+  color: #00473e;
+}
+
+.login-btn {
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  margin: 0;
+}
+
+.login-btn a {
+  color: #f2f7f5;
+}
+
+.element-to-add {
+  position: fixed;
+  top: 10px;
+  left: 0px;
+}
+
+.cart-icon-div {
+  position: relative;
+  display: flex;
+}
+
+#cart-items-div {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  background-color: #fa5246;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#cart-items {
+  color: #00332c;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+@media (min-width: 768px) {
+    /*so when the screen is bigger than mobile, we hide 
+    the side menu and its toggle and show the normal one*/
+
+  .main-header__nav {
+    display: flex;
+  }
+
+  #side-menu-toggle {
+    display: none;
+  }
+
+  .user-message {
+    width: 30rem;
+  }
+}
+
+.user-message {
+  margin: auto;
+  margin-bottom: 10px;
+  width: 400px;
+  height: 60px;
+  border: 1px solid rgb(62, 62, 204);
+  padding: 0.5rem;
+  border-radius: 3px;
+  background: rgb(199, 199, 255);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+}
+
+.user-message--error {
+  border: 3px solid #fa5246;
+  border-radius: 5px;
+  background: rgb(255, 196, 196);
+  color: #fa5246;
+  margin-top: 30px;
+  /* margin-bottom: -35px; */
+}
+
+#no-prods {
+  color: #00473e;
+}
+
+.no-prods-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #00473e;
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+}
+
+.no-orders-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #00473e;
+  margin: 40px;
+}
+
+.shop-return {
+  width: 185px;
+  border: none;
+  background-color: #faae2b;
+  border-radius: 5px;
+  color: #00473e;
+  height: 45px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.bold-text {
+  font-weight: 600;
+ }

@@ -1,0 +1,41 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/auth.css">    
+    <link rel="stylesheet" href="/css/forms.css">
+    
+</head>
+
+<body>
+   <%- include('../includes/nav.ejs') %>
+    <main>
+        <% if (errorMessage) { %>
+            <div class="user-message user-message--error"><%= errorMessage %></div>
+        <% } %>
+        <form class="login-form" action="/login" method="POST" novalidate>
+            <div class="login-wrap">                
+                <p class="login-title poppins-600">Login</p>
+                <div class="inputs-wrap">
+                    <div class="form-section">
+                    <input 
+                        class="input"
+                        type="email"
+                        name="email" 
+                        id="email" 
+                        value="<%= oldInput.email %>"
+                        placeholder="email"
+                    >
+                    </div>
+                    <div class="form-section">
+                        <input 
+                            class="input"
+                            type="password" 
+                            name="password" 
+                            id="password" 
+                            placeholder="password"
+                        >
+                    </div>
+                </div>
+                <button class="post-login-btn poppins-500" type="submit">Login</button>
+            </div>
+        </form>
+    </main>
+<%- include('../includes/end.ejs') %>

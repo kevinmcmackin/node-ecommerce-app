@@ -1,0 +1,67 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/product.css">
+    
+</head>
+
+<body>
+    <%- include('../includes/nav.ejs') %>
+    <main>
+        <% if (products.length > 0) { %>
+            <div class="prod-list-header">
+                <% if (products.length === 9) { %>
+                    <p class="showing">Showing <%= ((page - 1) * 9) + 1 %> - <%=  (page * 2) %> of <%= totalItems %> products</p>
+                <% } else { %>
+                    <p class="showing">Showing <%= ((page - 1) * 9) + 1 %> - <%=  (products.length) %> of <%= totalItems %> products</p>
+                <% } %>
+                <select name="admin-drop" id="admin-drop">
+                    <option value="For Sale">For Sale</option>
+                    <option value="Sold" selected>Out of stock</option>
+                </select>
+            </div>
+            <div class="grid">
+                <% for (let product of products) { %>
+                    <div class="product-item">
+                        <a href="/<%= product._id %>" class="prod-image-a">
+                            <div class="prod-image-wrap">
+                                <img 
+                                    src="/<%= product.imageUrl %>"
+                                    alt="<%= product.title %>"
+                                    class="prod-image"
+                                >
+                            </div>
+                        </a>
+                        <div class="prod-info">
+                            <% if (product.title.length < 40) { %>
+                                <h1 class="prod-title text"><%= product.title %></h1>      
+                            <% } else { %>
+                                <h1 class="prod-title text"><%= product.title.slice(0, 40) %>...</h1>      
+                            <% } %>
+                            <h1 class="prod-author text"><%= product.author %></h1>                                          
+                        </div>
+                        <div class="card__actions">
+                            <h2 class="prod-price text">$<%= product.price %></h2>
+                                <p class="prod-quantity text sold_out">
+                                    Sold!
+                                </p>
+                            <input type="hidden" value="<%= product._id %>" name="productId">
+                            <div class="card__actions">
+                                <a href="/admin/edit-product/<%= product._id %>" class="btn">Edit</a>
+                                <form action="/admin/delete-product" method="POST">
+                                    <input type="hidden" value="<%= product._id %>" name="productId">
+                                    <button type="submit" class="btn">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+            <% if (!(currentPage === 1 && !hasNextPage)) { %>
+                <%- include('../includes/pagination.ejs', { currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage }) %>
+            <% } %>
+        <% } else { %>
+            <h1>No Products Found!</h1>
+        <% } %>
+    </main>
+    <script src="/js/admin-prods.js"></script>
+
+<%- include('../includes/end.ejs') %>

@@ -1,0 +1,66 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+    <%- include('../includes/nav.ejs') %>
+    <main>
+        <% if (typeof search !== 'undefined') { %>
+            <div class="seller-title">
+                <p>Search results for "<%= search %>"</p>
+            </div>
+            <hr id="seller-hr">
+        <% } %>
+        <div class="prod-list-header <%= (typeof search !== 'undefined') ? 'prod-list-margin' : '' %>">
+            <% if (products.length === 9) { %>
+                <p class="showing poppins-500">Showing <%= ((page - 1) * 9) + 1 %> - <%=  (page * 2) %> of <%= totalItems %> products</p>
+            <% } else if (products.length === 0) { %>
+                <p class="showing poppins-500">Showing 0 - <%=  (products.length) %> of <%= totalItems %> products</p>
+            <% } else { %>
+                <p class="showing poppins-500">Showing <%= ((page - 1) * 9) + 1 %> - <%=  (products.length) %> of <%= totalItems %> products</p>
+            <% } %>
+        </div>
+        <% if (products.length > 0) { %>
+            <div class="grid <%= (typeof search !== 'undefined') ? 'shop-grid-no-margin' : '' %>">
+                <% for (let product of products) { %>
+                    <div class="product-item">
+                        <div class="product-item-top">
+                            <a href="/shop/<%= product._id %>" class="prod-image-a">
+                                <div class="prod-image-wrap">
+                                    <img 
+                                        src="/<%= product.imageUrl %>"
+                                        alt="<%= product.title %>"
+                                        class="prod-image"
+                                    >
+                                </div>
+                            </a>
+                            <div class="prod-info">
+                                <% if (product.title.length < 40) { %>
+                                    <h1 class="prod-title text poppins-600"><%= product.title %></h1>      
+                                <% } else { %>
+                                    <h1 class="prod-title text"><%= product.title.slice(0, 40) %>...</h1>      
+                                <% } %>
+                                <h1 class="prod-author text poppins-600"><%= product.author %></h1>                                          
+                            </div>
+                        </div>
+                        <div class="product-item-top">
+                            <div class="card__actions">
+                                <h2 class="prod-price text poppins-500">$<%= product.price %></h2>
+                                    <p class="prod-quantity text poppins-500">
+                                        <%= product.quantity %> sold by <%= product.userId.username %>
+                                    </p>
+                                <input type="hidden" value="<%= product._id %>" name="productId">
+                                <%- include('../includes/add-to-cart.ejs', {product: product}) %>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+            <% if (!(currentPage === 1 && !hasNextPage)) { %>
+                <%- include('../includes/pagination.ejs', { currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage }) %>
+            <% } %>
+         <% } else { %>
+            <h1 id="admin-no-prods" class="no-prod-found poppins-600">No Products Found!</h1>
+        <% } %>
+    </main>
+<%- include('../includes/end.ejs') %>
