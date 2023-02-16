@@ -100,7 +100,6 @@ app.use((req, res, next) => {
         if (!user) {
             return next();
         }
-        // add user to req
         req.user = user
         req.cartTot = req.user.getCartTot();
         next();
