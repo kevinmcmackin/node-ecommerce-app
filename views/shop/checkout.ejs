@@ -1,0 +1,17 @@
+<%- include('../includes/head.ejs') %>
+
+    </head>
+
+    <body>
+        <%- include('../includes/nav.ejs') %>
+        <main>
+           <form action="/" method="GET">
+            <div class="no-prods-div">
+                <h1 id="order-placed" class="poppins-600">Your order has been placed!</h1>
+                <h4 class="order-num">Your order number is <%= orderNum %></h4>
+                <button class="shop-return bold-text poppins-500" type="submit">View Orders</button>
+            </div>
+        </form>
+        </main>
+
+        <%- include('../includes/end.ejs') %>

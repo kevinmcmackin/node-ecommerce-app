@@ -47,7 +47,7 @@
                             <div class="card__actions">
                                 <h2 class="prod-price text poppins-500">$<%= product.price %></h2>
                                     <p class="prod-quantity text poppins-500">
-                                        <%= product.quantity %> sold by <%= product.userId.username %>
+                                        <%= product.quantity %> sold by <a href="/users/<%=product.userId._id%>" class="username-click" id="nav-to-user"><%= product.userId.username %></a>
                                     </p>
                                 <input type="hidden" value="<%= product._id %>" name="productId">
                                 <%- include('../includes/add-to-cart.ejs', {product: product}) %>
@@ -61,6 +61,7 @@
             <% } %>
          <% } else { %>
             <h1 id="admin-no-prods" class="no-prod-found poppins-600">No Products Found!</h1>
+            <a id="list-item" href="/shop" class="poppins-500">Return to shop</a>
         <% } %>
     </main>
 <%- include('../includes/end.ejs') %>

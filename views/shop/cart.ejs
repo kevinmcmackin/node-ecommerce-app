@@ -44,9 +44,6 @@
                                             <h3 id="price" class="poppins-400">$<%= p.productId.price %>/<span id="each" class="poppins-600">each</span></h3>
                                         </div>
                                         <div class="amount-err-wrap">
-                                            <% if (errorMessage && p.productId._id.toString() === errorItem.product._id.toString()) { %>
-                                                <div class="insuff-stock-err"><%= errorMessage %></div>
-                                            <% } %>
                                             <% if (errorMessage && p.productId._id.toString() === errorItem.toString()) { %>
                                                 <div class="insuff-stock-err"><%= errorMessage %></div>
                                             <% } %>
@@ -110,7 +107,7 @@
                         </div>
                     </div>  
                     <div class="place-order">
-                        <form action="/create-order" method="post">
+                        <form action="/create-order" method="get">
                             <% if (total === 0) { %>
                                 <button type="submit" class="order-btn bold-text poppins-500 <%=  (total === 0) ? 'disabled-btn' : '' %>" disabled>Place Order</button>
                             <% } else { %>

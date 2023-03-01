@@ -309,6 +309,7 @@ form {
   color: #f2f7f5;
   font-size: 20px;
   margin-left: 0px;
+  cursor: pointer;
 }
 
 .fa-magnifying-glass {
@@ -429,6 +430,7 @@ form {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 1px;
 }
 
 #cart-items {
@@ -476,10 +478,14 @@ form {
   background: rgb(255, 196, 196);
   color: #fa5246;
   margin-top: 30px;
-  /* margin-bottom: -35px; */
 }
 
 #no-prods {
+  color: #00473e;
+}
+
+#order-placed {
+  margin-bottom: 0;
   color: #00473e;
 }
 
@@ -517,4 +523,8 @@ form {
 
 .bold-text {
   font-weight: 600;
+ }
+
+ .order-num {
+    margin-bottom: 30px;
  }

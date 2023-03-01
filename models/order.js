@@ -42,6 +42,10 @@ const orderSchema = new Schema({
         year: {
             type: String,
             required: true
+        },
+        minute: {
+            type: String,
+            required: true
         }
     },
     total: {

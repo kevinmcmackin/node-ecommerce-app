@@ -32,6 +32,10 @@ const userSchema = new Schema({
                 type: Number, required: true
             }
         }]
+    },
+    confirm: {
+        type: Boolean,
+        required: true
     }
 });
 
@@ -149,8 +153,6 @@ userSchema.methods.minusAmount = function(prodId) {
 };
 
 userSchema.methods.clearCart = function(prodId) {
-    console.log('five')
-
     this.cart = {items: []};
     return this.save();
 }

@@ -23,13 +23,15 @@ router.post('/cart-add-amount', isAuth, shopController.addAmount);
 
 router.post('/cart-minus-amount', isAuth, shopController.minusAmount);
 
-router.post('/create-order', isAuth, shopController.createOrder);
+router.get('/create-order', isAuth, shopController.createOrder);
+
+router.get('/order-success', isAuth, shopController.getCheckout)
+
+router.get('/checkout', isAuth, shopController.getStripe);
 
 router.get('/orders', isAuth, shopController.getOrders);
 
 router.get('/users/:userId', shopController.getUserPage);
-
-// router.get('/orders-confirm', shopController.getOrderConfirm);
 
 router.get('/orders/:orderId', shopController.getInvoice);
 

@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const PDFDocument = require('pdfkit');
+const stripe = require('stripe')('sk_test_Hrs6SAopgFPF0bZXSN3f6ELN');
 
 const Product = require('../models/product');
 const Order = require('../models/order');
@@ -156,8 +157,6 @@ exports.getCart = (req, res, next) => {
             }, 0));              
             const total = Number((subtotal + (subtotal * 0.15)));
             const tax = Number(total - subtotal);
-
-            console.log(total)
 
             res.render('shop/cart', {
                 pageTitle: 'Cart',
@@ -382,8 +381,6 @@ exports.createOrder = (req, res, next) => {
             products.splice(indexArray[i], 1);
         }
 
-        console.log(products)
-
         // check stock and update quantity
 
         for (let i = 0; i < products.length; i++) {
@@ -397,11 +394,10 @@ exports.createOrder = (req, res, next) => {
                 })
         }
 
-        console.log('one')
-
         // create the order
 
         const date = new Date();
+        const minute = date.getMinutes();
         const year = date.getFullYear();
         let month = date.getMonth();
         let day = date.getDate();
@@ -414,9 +410,6 @@ exports.createOrder = (req, res, next) => {
             day = '0' + day.toString();
         };
 
-        console.log('two')
-
-
         const order = new Order({
             user: {
                 email: req.user.email,
@@ -428,23 +421,22 @@ exports.createOrder = (req, res, next) => {
                 date: date,
                 day: day,
                 month: month,
-                year: year
+                year: year,
+                minute: minute
             }
         });
 
-        console.log(order)
-
-
-        console.log('three')
-
-
         return order.save()
             .then(result => {
-                console.log('four')
                 return req.user.clearCart();
             })
             .then(() => {
-                res.redirect('/orders');
+                return res.render('shop/checkout', {
+                    path: '/checkout',
+                    pageTitle: 'Checkout',
+                    cartTot: req.cartTot,
+                    orderNum: order._id
+                })
             })
             .catch(err => {
                 // TODO: throw error properly
@@ -452,6 +444,86 @@ exports.createOrder = (req, res, next) => {
             });
     })
 }
+
+exports.getCheckout = (req, res, next) => {
+    res.render('shop/checkout', {
+        path: '/checkout',
+        pageTitle: 'Checkout',
+        cartTot: req.cartTot,
+    })
+}
+
+exports.getStripe = async (req, res, next) => {
+    const YOUR_DOMAIN = 'http://localhost:3001';
+
+    try {
+        const user = await req.user.populate('cart.items.productId');
+        // get list of all products
+        const products = user.cart.items.map(p => {
+            return {quantity: p.quantity, product:{ ...p.productId._doc }};
+        });
+
+        const subtotal = Number(products.reduce((acc, curr) => {
+            if (curr.product.quantity > 0) {
+              return acc + (curr.product.price * curr.quantity);
+            } else {
+              return acc;
+            }
+        }, 0));              
+        const total = Number((subtotal + (subtotal * 0.15)));
+        console.log(total)
+
+        // TODO: if all items in the cart are sold out, then return to cart with error message
+
+        if (total === 0) {
+            return res.redirect('/cart');
+        }
+
+        // checking if any of the products in the cart exceed the amount of that product in stock
+
+        const indexArray = products
+            .map((product, index) => product.quantity > product.product.quantity ? index : -1)
+            .filter(index => index !== -1);
+
+        for (let i = 0; i < indexArray.length; i++) {
+            products.splice(indexArray[i], 1);
+        }
+
+        // check stock
+
+        for (let i = 0; i < products.length; i++) {
+            const product = await Product.findById(products[i].product._id);
+            if (product.quantity < products[i].quantity) {
+                // TODO: throw error
+            }
+        }
+
+        // stripe
+
+        const session = await stripe.checkout.sessions.create({
+            line_items: [
+                {
+                    // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                    price_data: {
+                        currency: 'usd',
+                        product_data: {
+                            name: 'tshirt'
+                        },
+                        unit_amount: Math.trunc(total * 100),
+                    },
+                    quantity: 1,
+                },
+            ],
+            mode: 'payment',
+            success_url: `${YOUR_DOMAIN}/create-order`,
+            cancel_url: `${YOUR_DOMAIN}/cart`,
+        });
+        res.redirect(303, session.url);
+    } catch (err) {
+        console.log(err);
+        res.redirect('/cart');
+    }
+};
 
 exports.getOrders = (req, res, next) => {
     let ITEMS_PER_PAGE_ORDERS = 3;
@@ -463,6 +535,11 @@ exports.getOrders = (req, res, next) => {
     .then(numOrders => {
         totalOrders = numOrders;
         return Order.find({ "user.userId": req.user._id })
+            .sort({ 'date.year': -1 })
+            .sort({ 'date.month': -1 })
+            .sort({ 'date.day': -1 })
+            .sort({ 'date.hour': -1 })
+            .sort({ 'date.minute': -1 })
             .skip((page - 1) * ITEMS_PER_PAGE_ORDERS)
             .limit(ITEMS_PER_PAGE_ORDERS)
             .populate({
@@ -500,7 +577,6 @@ exports.getInvoice = (req, res, next) => {
             // check if order exists
 
             if (!order) {
-                // return next(new Error('No order found.'));
                 // TODO: throw error properly like above
                 return res.redirect('/orders');
             }
@@ -528,12 +604,59 @@ exports.getInvoice = (req, res, next) => {
 
             // send pdf to client as an HTTP response
             pdfDoc.pipe(res);
-  
+
+            const pageWidth = 612; // standard US letter-size page width in points
+            const lineWidth = pageWidth * 0.9; // 90% of page width
+            const leftMargin = (pageWidth - lineWidth) / 2; // 5% left margin
+            const textWidth = pdfDoc.widthOfString('INVOICE');
+            const xdis = Math.trunc(612 - leftMargin - textWidth) - 105;
+
             // adding text to pdf document
-            pdfDoc.fontSize(26).text('Invoice', {
-                underline: true
-            });
-            pdfDoc.text('-----------------------');
+            pdfDoc.fillColor('#888888').font('Times-Bold').fontSize(26).text('INVOICE', xdis, pdfDoc.y - 20);
+            pdfDoc.moveTo(leftMargin, pdfDoc.y + 20) // pdfDoc.y + 20 specifies that the line should be under the title
+                .lineTo(leftMargin + lineWidth, pdfDoc.y + 20)
+                .stroke();
+
+            pdfDoc.font('Times-Roman').fillColor('#000000');
+
+            pdfDoc.moveDown()
+
+            // company info
+            pdfDoc.fontSize(14).text('[Company name]', leftMargin, pdfDoc.y);
+            pdfDoc.fontSize(14).text('[Address]', leftMargin, pdfDoc.y);
+            pdfDoc.fontSize(14).text('[Customer support number]', leftMargin, pdfDoc.y);
+
+            // rectangle for the table
+            pdfDoc.moveTo(leftMargin, pdfDoc.y + 20);
+            const rectWidth = 450;
+            const rectHeight = 400;
+            const rectX = (pageWidth - rectWidth) / 2;
+            const rectY = pdfDoc.y + 40;
+            pdfDoc.rect(rectX, rectY, rectWidth, rectHeight).stroke();
+
+            // shading for top of table
+            const topY = rectY + 30;
+            pdfDoc.fillColor('#EEEEEE').rect(rectX + 1, rectY + 1, rectWidth - 2, topY - rectY - 2).fill();
+
+            // column line of table
+            const centerX = rectX + rectWidth / 1.4;
+            pdfDoc.moveTo(centerX, rectY)
+                .lineTo(centerX, rectY + rectHeight)
+                .stroke();
+
+            // top line of table
+            pdfDoc.moveTo(rectX, topY)
+                .lineTo(rectX + rectWidth, topY)
+                .stroke();
+
+            // Add "Description" text within the table
+            pdfDoc.fillColor('#000000').font('Times-Bold').fontSize(14)
+                .text('Description', rectX + 10, topY - 20);
+
+            // Add "Amount" text within the table
+            pdfDoc.fillColor('#000000').font('Times-Bold').fontSize(14)
+                .text('Amount', rectX + 360, topY - 20);
+
 
             // adding the products to the invoice
             let totalPrice = 0;
@@ -541,26 +664,45 @@ exports.getInvoice = (req, res, next) => {
             order.products.forEach(prod => {
                 totalPrice += Number(prod.quantity * prod.product.price);
                 pdfDoc
+                .font('Times-Roman')
                     .fontSize(14)
-                    .text(
-                        prod.product.title +
-                        ' - ' +
-                        prod.quantity +
-                        ' x ' +
-                        '$' +
-                        Number(prod.product.price).toFixed(2)
-            );
-
+                    .text(prod.product.title + ' (' + prod.quantity + ')', rectX + 10, pdfDoc.y + 15);
+                pdfDoc
+                    .fontSize(14)
+                    .text('$' + Number(prod.product.price).toFixed(2), rectX + 365, pdfDoc.y - 15);
+            });
             totalPrice = (totalPrice * 1.15).toFixed(2);
-        });
-        pdfDoc.text('---');
-        pdfDoc.fontSize(20).text('Total Price: $' + totalPrice);
-  
-        // done writing, send to client
-        pdfDoc.end();
 
-      })
-      .catch(err => next(err));
+            // shading for bottom of table
+            const bottomY = rectY + rectHeight - 30; // Adjust as needed for spacing
+            pdfDoc.fillColor('#EEEEEE').rect(rectX + 1, bottomY + 1, rectWidth - 2, topY - rectY - 2).fill();
+
+            // column line for bottom
+            const centerXbottom = rectX + rectWidth / 1.9;
+            pdfDoc.moveTo(centerXbottom, bottomY)
+                .lineTo(centerXbottom, bottomY + (topY - rectY))
+                .stroke();
+            
+            // bottom hor line of table
+            pdfDoc.moveTo(rectX, bottomY)
+                .lineTo(rectX + rectWidth, bottomY)
+                .stroke();
+
+            // Add "Total" text within the table
+            pdfDoc.fillColor('#000000').font('Times-Roman').fontSize(14)
+                .text('Total:', (pageWidth / 2) + 20, bottomY + 9);
+
+            // Add "Total" text within the table
+            pdfDoc.fillColor('#000000').font('Times-Bold').fontSize(14)
+                .text('$' + totalPrice, rectX + 365, bottomY + 9);
+
+            pdfDoc.end();
+
+        })
+        .catch(err => {
+            // TODO: log error
+            console.log(err);
+        });
 }
 
 exports.postUpdate = (req, res, next) => {

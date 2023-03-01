@@ -6,12 +6,13 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session); // for setting up the storing of sessions
 const multer = require('multer'); // for storing files uploaded in forms
 const flash = require('connect-flash');
+const keys = require('./environments/keys');
 
 
 const User = require('./models/user');
 
 // url for mongoDB
-const MONGODBURI = ``;
+const MONGODBURI = keys.mongoDB;
 
 // set up the app
 const app = express();
@@ -72,7 +73,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 // this is where we configure the session and the associated cookie 
 app.use(
     session({ // config express session middleware
-        secret: '', // signs the session ID cookie
+        secret: keys.secret, // signs the session ID cookie
         resave: false, // don't auto write to the session store every time theres a req
         saveUninitialized: false, // if a session is created but no data added, don't save session
         store: store // where to store sessions

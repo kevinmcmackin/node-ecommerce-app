@@ -1,0 +1,16 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/auth.css">    
+    <link rel="stylesheet" href="/css/forms.css">
+    
+</head>
+
+<body>
+   <%- include('../includes/nav.ejs') %>
+    <main>
+        <div class="confirm-wrap">
+            <h1 id="please-confirm" class="poppins-600">Your account has not been verified yet.</h1>
+            <h2 id="please-check" class="poppins-600">Please check your email for instructions.</h2>
+            <a href="/login" id="return-login" class="poppins-400">Return to login</a>
+        </div>
+    </main>
+<%- include('../includes/end.ejs') %>

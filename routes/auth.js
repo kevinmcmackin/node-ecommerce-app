@@ -53,6 +53,10 @@ router.post('/signup',
     authController.postSignup
 );
 
+router.get('/confirm', authController.getConfirm);
+
+router.get('/confirm/:id', authController.getConfirmID);
+
 router.get('/login', authController.getLogin);
 
 router.post('/login', 
